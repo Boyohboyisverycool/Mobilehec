@@ -2,7 +2,7 @@
     {
         "role": "owner",
         "name": "Mr. Mobilehec",
-        "link": "https://www.youtube.com/@Prometheus_Alt"
+        "link": "https://youtube.com/@thebridgermc"
     },
     {
         "role": "admin",
@@ -10,12 +10,12 @@
         "link": "https://www.youtube.com/@Prometheus_Alt"
     },
     {
-        "role": "helper",
+        "role": ".helper",
         "name": "placeholder_1",
         "link": "https://www.youtube.com/@Prometheus_Alt"
     },
     {
-        "role": "trial",
+        "role": ".trial",
         "name": "placeholder_2",
         "link": "https://www.youtube.com/@Prometheus_Alt"
     },
