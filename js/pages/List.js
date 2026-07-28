@@ -51,7 +51,7 @@ export default {
                             <p>{{ level.id }}</p>
                         </li>
                         <li>
-                            <div class="type-title-sm">Password</div>
+                            <div class="type-title-sm">clear condition</div>
                             <p>{{ level.password || 'Free to Copy' }}</p>
                         </li>
                     </ul>
@@ -99,6 +99,9 @@ export default {
                         </ol>
                     </template>
                     <h3>Submission Requirements</h3>
+                    <p>
+                         Main Rules in the Discord. Will move later.
+                    </p>
                     <p>
                         Achieved the record without using hacks (however, FPS bypass is allowed, up to 360fps)
                     </p>
