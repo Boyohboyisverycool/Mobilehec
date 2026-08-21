@@ -1,0 +1,18 @@
+{
+    "id": 141282206,
+    "name": "Jawbreaker copy 26",
+    "author": "angopr",
+    "creators": ["Angopr"],
+    "verifier": "angopr",
+    "verification": "https://www.youtube.com/watch?v=a3q4dY29bM4s",
+    "percentToQualify": "100",
+    "password": "60",
+    "records": [
+        {
+            "user": "dan",
+            "link": "",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
