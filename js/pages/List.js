@@ -215,3 +215,17 @@ function getLevelThumbnail(level) {
     // Fallback if there's no video and no manual thumbnail
     return ''; 
 }
+//
+//
+//
+// 'levelData' is the current JSON object the loop is reading
+let bgImage = getLevelThumbnail(levelData);
+
+let html = `
+    <div class="level-card" style="background-image: url('${bgImage}');">
+        <div class="level-card-content">
+            <h2>${levelData.name}</h2>
+            <p>${levelData.author}</p>
+        </div>
+    </div>
+`;
