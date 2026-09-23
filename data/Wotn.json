@@ -1,10 +1,10 @@
 {
-    "id": 1,
+    "id": 0,
     "name": "Wrath of the nuhs",
     "author": "Dan",
     "creators": [],
     "verifier": "Dan",
-    "verification": "nan",
+    "verification": "https://www.youtube.com",
     "percentToQualify": "100",
     "password": "CBS/60",
     "records": [
