@@ -147,7 +147,23 @@ export default {
             if (!this.level.showcase) {
                 return embed(this.level.verification);
             }
+//
+//
+//
+// Inside the JS loop where the template generates the list...
+let bgImage = getLevelThumbnail(level); // 'level' is the current JSON file being read
 
+let html = `
+    <div class="level-card" style="background-image: url('${bgImage}');">
+        <div class="level-card-content">
+            <h2>${level.name}</h2>
+            <p>Verified by: ${level.verifier}</p>
+        </div>
+    </div>
+`;
+//
+//
+//
             return embed(
                 this.toggledShowcase
                     ? this.level.showcase
@@ -185,3 +201,35 @@ export default {
         score,
     },
 };
+
+
+//
+//
+//
+function getLevelThumbnail(level) {
+    // 1. MANUAL OVERRIDE: Check if you defined a custom thumbnail in this level's JSON
+    if (level.thumbnail) {
+        return level.thumbnail; 
+    }
+    
+    // 2. DEFAULT: Target the exact "verification" key from your JSON file
+    let url = level.verification || "";
+    let videoId = '';
+    
+    // Extract the YouTube ID
+    if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+    } else if (url.includes('youtube.com/watch')) {
+        videoId = new URLSearchParams(url.split('?')[1]).get('v');
+    }
+
+    // 3. Return the middle-of-video thumbnail
+    if (videoId) {
+        return `https://img.youtube.com/vi/${videoId}/2.jpg`; 
+    }
+    
+    return ''; // Fallback if no verification link exists
+}
+//
+//
+//
