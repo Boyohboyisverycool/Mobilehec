@@ -109,11 +109,6 @@ table.list tr td.level button {
     background-color: transparent !important;
 }
 
-/* Optional: Slight border to separate the levels better since they now have images */
-table.list tr {
-    border-bottom: 2px solid var(--border, #333); 
-}
-
 /* Optional: Change the overlay color specifically when a level is hovered/active */
 table.list tr:hover, 
 table.list tr.active {
