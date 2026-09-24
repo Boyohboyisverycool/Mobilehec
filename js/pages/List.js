@@ -23,27 +23,23 @@ export default {
         <main v-else class="page-list">
             <div class="list-container">
                 <table class="list" v-if="list">
-                    <!-- Apply background image to each list row here -->
-                    <tr v-for="([level, err], i) in list" 
-                        :class="{ 'active': selected == i, 'error': !level }"
-                        :style="level ? { 
-                            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(' + getThumbnail(level.verification, level.thumbnail) + ')',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center'
-                        } : {}">
+                    <tr v-for="([level, err], i) in list">
                         <td class="rank">
                             <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
-                        <td class="level">
-                            <button @click="selected = i">
-                                <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
+                        <td class="level" :class="{ 'active': selected == i, 'error': !level }">
+                            <!-- Reverted back to the original button, but added a flex layout so the text and thumbnail sit perfectly side-by-side -->
+                            <button @click="selected = i" style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 8px;">
+                                <span class="type-label-lg" style="text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    {{ level?.name || \`Error (\${err}.json)\` }}
+                                </span>
+                                <img v-if="level" :src="getThumbnail(level.verification, level.thumbnail)" style="width: 53px; height: 30px; object-fit: cover; border-radius: 4px; flex-shrink: 0;" alt="thumbnail" />
                             </button>
                         </td>
                     </tr>
                 </table>
             </div>
-            <!-- Removed the style from here, returning it to normal -->
             <div class="level-container">
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
@@ -182,7 +178,8 @@ export default {
                 videoId = new URLSearchParams(videoUrl.split('?')[1]).get('v');
             }
             
-            return videoId ? `https://img.youtube.com/vi/${videoId}/2.jpg` : '';
+            // Note: mqdefault.jpg creates a much cleaner, borderless thumbnail for this UI layout
+            return videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
         }
     },
 };
