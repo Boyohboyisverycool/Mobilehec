@@ -102,16 +102,24 @@ input[type="checkbox"] {
 /*/
 /*/
 /* Ensure the list rows let the background image show through */
-table.list tr td,
-table.list tr td.rank,
-table.list tr td.level,
-table.list tr td.level button {
-    background-color: transparent !important;
+/* 1. Add gaps/space between the levels vertically */
+table.list {
+    border-collapse: separate !important;
+    border-spacing: 0 8px !important;
 }
 
-/* Optional: Change the overlay color specifically when a level is hovered/active */
-table.list tr:hover, 
-table.list tr.active {
-    /* Decreasing the darkness of the gradient slightly when hovered/active so it highlights */
-    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.15); 
+/* Make sure the buttons transition smoothly when hovered */
+table.list tr td.level button {
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+/* 2. The shine effect when hovering over a level */
+table.list tr td.level button:hover {
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 3. Indication of the selected/active level */
+table.list tr td.level.active button {
+    /* Retains the shine, plus adds a white inner border to clearly show it's selected */
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.15), inset 0 0 0 4px white !important;
 }
