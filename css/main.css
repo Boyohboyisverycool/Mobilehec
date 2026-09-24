@@ -102,28 +102,22 @@ input[type="checkbox"] {
 /*/
 /*/
 /* Update your existing level card container to handle the background */
-.level-card (or whatever class your template uses for the box) {
-    position: relative;
-    background-size: cover;
-    background-position: center;
-    border-radius: 8px; /* Match your list's aesthetic */
-    overflow: hidden;
-}
-
-/* Add a dark gradient overlay so the white text stays readable */
-.level-card::before {
+/* Add a dark gradient overlay so white text stays readable over the video thumbnail */
+.level-container::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.5) 100%);
+    /* Dark fade from left to right */
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 100%);
     z-index: 1;
+    border-radius: inherit; /* Keeps the edges rounded */
 }
 
-/* Ensure the text stays above the background */
-.level-card-content (or the inner div wrapper) {
+/* Ensure the text and buttons inside the card sit ABOVE the dark overlay */
+.level-container > * {
     position: relative;
     z-index: 2;
 }
