@@ -148,10 +148,6 @@ export default {
             if (!this.level.showcase) {
                 return embed(this.level.verification);
             }
-
-//
-//
-//
             
             return embed(
                 this.toggledShowcase
@@ -188,19 +184,6 @@ export default {
     methods: {
         embed,
         score,
-    },
-};
-
-
-//
-//
-//
-export default {
-    data: () => ({
-        // ... (your existing data stuff is here)
-    }),
-    methods: {
-        // ADD THIS FUNCTION HERE:
         getThumbnail(videoUrl, customThumbnail) {
             // 1. Manual override
             if (customThumbnail) return customThumbnail;
@@ -218,7 +201,4 @@ export default {
             return videoId ? `https://img.youtube.com/vi/${videoId}/2.jpg` : '';
         }
     },
-    // ... (computed properties etc.)
-//
-//
-//
+};
