@@ -29,12 +29,21 @@ export default {
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
-                            <!-- Reverted back to the original button, but added a flex layout so the text and thumbnail sit perfectly side-by-side -->
-                            <button @click="selected = i" style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 8px;">
-                                <span class="type-label-lg" style="text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                    {{ level?.name || \`Error (\${err}.json)\` }}
-                                </span>
-                                <img v-if="level" :src="getThumbnail(level.verification, level.thumbnail)" style="width: 53px; height: 30px; object-fit: cover; border-radius: 4px; flex-shrink: 0;" alt="thumbnail" />
+                            <!-- Background applied directly to button to keep the original borders/shape intact -->
+                            <button @click="selected = i" :style="level ? {
+                                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(' + getThumbnail(level.verification, level.thumbnail) + ')',
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                border: 'none' /* Ensures the image goes edge-to-edge inside the original border styling */
+                            } : {}">
+                                <div style="display: flex; flex-direction: column; text-align: left; width: 100%; overflow: hidden;">
+                                    <span class="type-label-lg" style="color: white; text-shadow: 1px 1px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,0.9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                        {{ level?.name || \`Error (\${err}.json)\` }}
+                                    </span>
+                                    <span v-if="level?.verifier" style="color: white; font-size: 0.75em; text-shadow: 1px 1px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,0.9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">
+                                        {{ level.verifier }}
+                                    </span>
+                                </div>
                             </button>
                         </td>
                     </tr>
@@ -178,8 +187,8 @@ export default {
                 videoId = new URLSearchParams(videoUrl.split('?')[1]).get('v');
             }
             
-            // Note: mqdefault.jpg creates a much cleaner, borderless thumbnail for this UI layout
-            return videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '';
+            // Updated to hqdefault.jpg for a higher quality thumbnail that still fills the box perfectly
+            return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
         }
     },
 };
