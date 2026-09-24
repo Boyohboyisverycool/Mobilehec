@@ -101,23 +101,22 @@ input[type="checkbox"] {
 /*/
 /*/
 /*/
-/* Update your existing level card container to handle the background */
-/* Add a dark gradient overlay so white text stays readable over the video thumbnail */
-.level-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Dark fade from left to right */
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 100%);
-    z-index: 1;
-    border-radius: inherit; /* Keeps the edges rounded */
+/* Ensure the list rows let the background image show through */
+table.list tr td,
+table.list tr td.rank,
+table.list tr td.level,
+table.list tr td.level button {
+    background-color: transparent !important;
 }
 
-/* Ensure the text and buttons inside the card sit ABOVE the dark overlay */
-.level-container > * {
-    position: relative;
-    z-index: 2;
+/* Optional: Slight border to separate the levels better since they now have images */
+table.list tr {
+    border-bottom: 2px solid var(--border, #333); 
+}
+
+/* Optional: Change the overlay color specifically when a level is hovered/active */
+table.list tr:hover, 
+table.list tr.active {
+    /* Decreasing the darkness of the gradient slightly when hovered/active so it highlights */
+    box-shadow: inset 0 0 0 9999px rgba(255, 255, 255, 0.15); 
 }
