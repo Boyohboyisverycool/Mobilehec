@@ -23,12 +23,19 @@ export default {
         <main v-else class="page-list">
             <div class="list-container">
                 <table class="list" v-if="list">
-                    <tr v-for="([level, err], i) in list">
+                    <!-- Apply background image to each list row here -->
+                    <tr v-for="([level, err], i) in list" 
+                        :class="{ 'active': selected == i, 'error': !level }"
+                        :style="level ? { 
+                            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(' + getThumbnail(level.verification, level.thumbnail) + ')',
+                            backgroundSize: 'cover',
+                            backgroundPosition: 'center'
+                        } : {}">
                         <td class="rank">
                             <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
-                        <td class="level" :class="{ 'active': selected == i, 'error': !level }">
+                        <td class="level">
                             <button @click="selected = i">
                                 <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
                             </button>
@@ -36,8 +43,8 @@ export default {
                     </tr>
                 </table>
             </div>
-            <!-- You are adding the :style="..." part to the existing wrapper -->
-            <div class="level-container" :style="{ backgroundImage: 'url(' + getThumbnail(level.verification, level.thumbnail) + ')', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }">
+            <!-- Removed the style from here, returning it to normal -->
+            <div class="level-container">
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
@@ -100,33 +107,15 @@ export default {
                         </ol>
                     </template>
                     <h3>Submission Requirements</h3>
-                    <p>
-                         Main Rules in the Discord. Will move later.
-                    </p>
-                    <p>
-                        Achieved the record without using hacks (however, FPS bypass is allowed, up to 360fps)
-                    </p>
-                    <p>
-                        Achieved the record on the level that is listed on the site - please check the level ID before you submit a record
-                    </p>
-                    <p>
-                        Have either source audio or clicks/taps in the video. Edited audio only does not count
-                    </p>
-                    <p>
-                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exempt from this
-                    </p>
-                    <p>
-                        The recording must also show the player hit the endwall, or the completion will be invalidated.
-                    </p>
-                    <p>
-                        Do not use secret routes or bug routes
-                    </p>
-                    <p>
-                        Do not use easy modes, only a record of the unmodified level qualifies
-                    </p>
-                    <p>
-                        Once a level falls onto the Legacy List, we accept records for it for 24 hours after it falls off, then afterwards we never accept records for said level
-                    </p>
+                    <p>Main Rules in the Discord. Will move later.</p>
+                    <p>Achieved the record without using hacks (however, FPS bypass is allowed, up to 360fps)</p>
+                    <p>Achieved the record on the level that is listed on the site - please check the level ID before you submit a record</p>
+                    <p>Have either source audio or clicks/taps in the video. Edited audio only does not count</p>
+                    <p>The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exempt from this</p>
+                    <p>The recording must also show the player hit the endwall, or the completion will be invalidated.</p>
+                    <p>Do not use secret routes or bug routes</p>
+                    <p>Do not use easy modes, only a record of the unmodified level qualifies</p>
+                    <p>Once a level falls onto the Legacy List, we accept records for it for 24 hours after it falls off, then afterwards we never accept records for said level</p>
                 </div>
             </div>
         </main>
@@ -157,11 +146,9 @@ export default {
         },
     },
     async mounted() {
-        // Hide loading spinner
         this.list = await fetchList();
         this.editors = await fetchEditors();
 
-        // Error handling
         if (!this.list) {
             this.errors = [
                 "Failed to load list. Retry in a few minutes or notify list staff.",
@@ -185,11 +172,9 @@ export default {
         embed,
         score,
         getThumbnail(videoUrl, customThumbnail) {
-            // 1. Manual override
             if (customThumbnail) return customThumbnail;
             if (!videoUrl) return '';
             
-            // 2. Extract YouTube ID
             let videoId = '';
             if (videoUrl.includes('youtu.be/')) {
                 videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
@@ -197,7 +182,6 @@ export default {
                 videoId = new URLSearchParams(videoUrl.split('?')[1]).get('v');
             }
             
-            // 3. Return the 2.jpg middle-of-video thumbnail
             return videoId ? `https://img.youtube.com/vi/${videoId}/2.jpg` : '';
         }
     },
