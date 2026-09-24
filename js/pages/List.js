@@ -29,18 +29,25 @@ export default {
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
-                            <!-- Background applied directly to button to keep the original borders/shape intact -->
-                            <button @click="selected = i" :style="level ? {
-                                backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(' + getThumbnail(level.verification, level.thumbnail) + ')',
+                            <!-- Button styling is applied here to guarantee size, layout, and image dimming -->
+                            <button @click="selected = i" :style="{
+                                backgroundImage: level ? 'linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05)), url(' + getThumbnail(level.verification, level.thumbnail) + ')' : 'none',
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
-                                border: 'none' /* Ensures the image goes edge-to-edge inside the original border styling */
-                            } : {}">
-                                <div style="display: flex; flex-direction: column; text-align: left; width: 100%; overflow: hidden;">
-                                    <span class="type-label-lg" style="color: white; text-shadow: 1px 1px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,0.9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                border: 'none',
+                                height: '75px',
+                                width: '100%',
+                                padding: '0 15px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                boxSizing: 'border-box'
+                            }">
+                                <div style="text-align: left; width: 100%; overflow: hidden;">
+                                    <span class="type-label-lg" style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 3px rgba(0,0,0,0.8); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; font-size: 1.15em;">
                                         {{ level?.name || \`Error (\${err}.json)\` }}
                                     </span>
-                                    <span v-if="level?.verifier" style="color: white; font-size: 0.75em; text-shadow: 1px 1px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,0.9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">
+                                    <span v-if="level?.verifier" style="color: white; font-size: 0.8em; text-shadow: 2px 2px 4px rgba(0,0,0,0.9), -1px -1px 3px rgba(0,0,0,0.8); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; margin-top: 3px;">
                                         {{ level.verifier }}
                                     </span>
                                 </div>
@@ -155,29 +162,22 @@ export default {
         this.editors = await fetchEditors();
 
         if (!this.list) {
-            this.errors = [
-                "Failed to load list. Retry in a few minutes or notify list staff.",
-            ];
+            this.errors = ["Failed to load list. Retry in a few minutes or notify list staff."];
         } else {
             this.errors.push(
                 ...this.list
                     .filter(([_, err]) => err)
-                    .map(([_, err]) => {
-                        return `Failed to load level. (${err}.json)`;
-                    })
+                    .map(([_, err]) => `Failed to load level. (${err}.json)`)
             );
-            if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
-            }
+            if (!this.editors) this.errors.push("Failed to load list editors.");
         }
-
         this.loading = false;
     },
     methods: {
         embed,
         score,
         getThumbnail(videoUrl, customThumbnail) {
-            if (customThumbnail) return customThumbnail;
+            if (customThumbnail) return customThumbnail; // Override still works perfectly
             if (!videoUrl) return '';
             
             let videoId = '';
@@ -187,7 +187,6 @@ export default {
                 videoId = new URLSearchParams(videoUrl.split('?')[1]).get('v');
             }
             
-            // Updated to hqdefault.jpg for a higher quality thumbnail that still fills the box perfectly
             return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : '';
         }
     },
