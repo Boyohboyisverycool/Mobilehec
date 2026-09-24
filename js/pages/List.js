@@ -36,7 +36,8 @@ export default {
                     </tr>
                 </table>
             </div>
-            <div class="level-container">
+            <!-- You are adding the :style="..." part to the existing wrapper -->
+            <div class="level-container" :style="{ backgroundImage: 'url(' + getThumbnail(level.verification, level.thumbnail) + ')', backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }">
                 <div class="level" v-if="level">
                     <h1>{{ level.name }}</h1>
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
@@ -147,23 +148,11 @@ export default {
             if (!this.level.showcase) {
                 return embed(this.level.verification);
             }
-//
-//
-//
-// Inside the JS loop where the template generates the list...
-let bgImage = getLevelThumbnail(level); // 'level' is the current JSON file being read
 
-let html = `
-    <div class="level-card" style="background-image: url('${bgImage}');">
-        <div class="level-card-content">
-            <h2>${level.name}</h2>
-            <p>Verified by: ${level.verifier}</p>
-        </div>
-    </div>
-`;
 //
 //
 //
+            
             return embed(
                 this.toggledShowcase
                     ? this.level.showcase
@@ -206,30 +195,30 @@ let html = `
 //
 //
 //
-function getLevelThumbnail(level) {
-    // 1. MANUAL OVERRIDE: Check if you defined a custom thumbnail in this level's JSON
-    if (level.thumbnail) {
-        return level.thumbnail; 
-    }
-    
-    // 2. DEFAULT: Target the exact "verification" key from your JSON file
-    let url = level.verification || "";
-    let videoId = '';
-    
-    // Extract the YouTube ID
-    if (url.includes('youtu.be/')) {
-        videoId = url.split('youtu.be/')[1].split('?')[0];
-    } else if (url.includes('youtube.com/watch')) {
-        videoId = new URLSearchParams(url.split('?')[1]).get('v');
-    }
-
-    // 3. Return the middle-of-video thumbnail
-    if (videoId) {
-        return `https://img.youtube.com/vi/${videoId}/2.jpg`; 
-    }
-    
-    return ''; // Fallback if no verification link exists
-}
+export default {
+    data: () => ({
+        // ... (your existing data stuff is here)
+    }),
+    methods: {
+        // ADD THIS FUNCTION HERE:
+        getThumbnail(videoUrl, customThumbnail) {
+            // 1. Manual override
+            if (customThumbnail) return customThumbnail;
+            if (!videoUrl) return '';
+            
+            // 2. Extract YouTube ID
+            let videoId = '';
+            if (videoUrl.includes('youtu.be/')) {
+                videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+            } else if (videoUrl.includes('youtube.com/watch')) {
+                videoId = new URLSearchParams(videoUrl.split('?')[1]).get('v');
+            }
+            
+            // 3. Return the 2.jpg middle-of-video thumbnail
+            return videoId ? `https://img.youtube.com/vi/${videoId}/2.jpg` : '';
+        }
+    },
+    // ... (computed properties etc.)
 //
 //
 //
