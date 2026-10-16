@@ -8,5 +8,11 @@
     "percentToQualify": "100",
     "password": "CBS",
     "records": [
+        {
+            "user": "angopr",
+            "link": "https://youtu.be/kgMwrg5YK1c?is=JspOwm5wLvD93MvO",
+            "percent": 100,
+            "hz": 60
+        }
     ]
 }
